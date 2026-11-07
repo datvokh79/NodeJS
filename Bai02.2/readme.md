@@ -1,44 +1,68 @@
-# BÀI 2.2 – ỨNG DỤNG NODE.JS ĐẦU TIÊN
-
-**Sinh viên:** Võ Tiến Đạt  
-**Lớp:** CĐ-CNTT18B
-**MSSV:** CDCNTT18B09
+# BÀI 2 GĐ2 – ỨNG DỤNG NODE.JS ĐẦU TIÊN
 
 ## 1. Giới thiệu
+Xây dựng ứng dụng HTTP Server bằng Node.js thuần, sử dụng module `http` có sẵn. Server hoạt động tại cổng 3000 và hiển thị thông tin sinh viên khi người dùng truy cập trang chủ.
 
-Xây dựng ứng dụng HTTP Server đầu tiên bằng Node.js, sử dụng module `http` tích hợp sẵn. Ứng dụng tiếp nhận yêu cầu từ trình duyệt và trả về trang HTML chứa thông tin sinh viên.
+## 2. Thông tin sinh viên
 
-## 2. Công nghệ sử dụng
+- **Họ và tên:** Võ Tiến Đạt
+- **Mã sinh viên:** CDCNTT18B09
+- **Lớp:** CĐ-CNTT18B
+
+## 3. Công nghệ sử dụng
 
 - Node.js
-- JavaScript
-- HTTP Module
-- HTML và CSS
-- Visual Studio Code
-
-## 3. Cấu trúc chương trình
-
-- `server.js`: Tập tin khởi tạo và xử lý HTTP Server.
--  Lưu hình ảnh quá trình thực hiện và kết quả.
+- Module `http` có sẵn trong Node.js.
+- HTML và CSS để xây dựng giao diện trang web.
 
 ## 4. Hướng dẫn chạy chương trình
 
-**Bước 1:** Cài đặt Node.js trên máy tính.
+**Bước 1: Kiểm tra Node.js**
 
-**Bước 2:** Mở Terminal tại thư mục chứa file `server.js`.
+Mở Terminal hoặc PowerShell và nhập lệnh:
 
-**Bước 3:** Thực thi lệnh:
+```bash
+node -v
+```
 
-`node server.js`
+Nếu hiển thị phiên bản Node.js nghĩa là môi trường đã được cài đặt.
 
-**Bước 4:** Mở trình duyệt và truy cập:
+**Bước 2: Mở thư mục bài tập**
 
-`http://localhost:3000`
+Mở Terminal tại thư mục chứa file `server.js`.
+
+**Bước 3: Khởi động HTTP Server**
+
+Nhập lệnh:
+
+```bash
+node server.js
+```
+
+Nếu chương trình hoạt động thành công, Terminal sẽ hiển thị:
+
+```text
+Server dang chay tai http://localhost:3000
+```
+
+**Bước 4: Truy cập trang web**
+
+Mở trình duyệt và nhập địa chỉ:
+
+```text
+http://localhost:3000
+```
+
+Trang web sẽ hiển thị họ tên, mã sinh viên và lớp của sinh viên.
+
+**Bước 5: Dừng Server**
+
+Quay lại cửa sổ Terminal đang chạy chương trình và nhấn `Ctrl + C` để dừng Server.
 
 ## 5. Kết quả
 
-Khi truy cập trang chủ, máy chủ trả về nội dung HTML hiển thị họ tên, mã sinh viên và lớp học. Chương trình sử dụng module HTTP thuần của Node.js, không sử dụng Express.
+Ứng dụng khởi động thành công tại cổng 3000. Khi truy cập trang chủ, Server trả về nội dung HTML hiển thị thông tin sinh viên theo yêu cầu bài tập.
 
-## 6. Kết luận
+## 6. Mã nguồn
 
-Hoàn thành việc xây dựng và chạy HTTP Server đầu tiên bằng Node.js. Qua bài thực hành, em hiểu thêm về cách tạo máy chủ, tiếp nhận yêu cầu HTTP và trả dữ liệu HTML về trình duyệt.
+File chương trình chính: `server.js`
