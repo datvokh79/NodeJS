@@ -1,4 +1,4 @@
-# BÀI 2 – ỨNG DỤNG NODE.JS ĐẦU TIÊN
+# BÀI 2.2 – ỨNG DỤNG NODE.JS ĐẦU TIÊN
 
 **Sinh viên:** Võ Tiến Đạt  
 **Lớp:** CĐ-CNTT18B
