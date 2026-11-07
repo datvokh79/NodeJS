@@ -5,8 +5,8 @@ const PORT = 3000;
 
 // Thong tin sinh vien
 const student = {
-    name: 'Vo Tien Dat',
-    class: 'CD-CNTT18B',
+    name: 'Võ Tiến Đạt',
+    class: 'CĐ-CNTT18B',
     studentId: 'CDCNTT18B09'
 };
 
@@ -25,7 +25,7 @@ const server = http.createServer((req, res) => {
             <head>
                 <meta charset="UTF-8">
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <title>Node.js - Thong tin sinh vien</title>
+                <title>Node.js - Thông tin sinh viên</title>
 
                 <style>
                     body {
@@ -76,17 +76,17 @@ const server = http.createServer((req, res) => {
                 <div class="card">
                     <h1>Node.js HTTP Server</h1>
 
-                    <p>Thong tin sinh vien</p>
+                    <p>Thông tin sinh viên</p>
 
                     <div class="name">${student.name}</div>
 
                     <div class="info">
-                        Ma sinh vien: ${student.studentId}<br>
-                        Lop: ${student.class}
+                        Mã sinh viên: ${student.studentId}<br>
+                        Lớp: ${student.class}
                     </div>
 
                     <div class="status">
-                        Server dang hoat dong
+                        Server đang hoạt động
                     </div>
                 </div>
             </body>
@@ -98,7 +98,7 @@ const server = http.createServer((req, res) => {
             'Content-Type': 'text/html; charset=utf-8'
         });
 
-        res.end('<h1>404 - Khong tim thay trang</h1>');
+        res.end('<h1>404 - Không tìm thấy trang</h1>');
     }
 });
 
