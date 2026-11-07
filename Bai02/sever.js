@@ -81,6 +81,7 @@ const server = http.createServer((req, res) => {
 
                 <div class="info">
                     Lớp: CĐ-CNTT18B<br>
+                    MSSV: CDCNTT18B09<br>
                     Môn học: Node.js và MongoDB<br>
                     Máy chủ: Node.js HTTP Module
                 </div>
