@@ -22,19 +22,7 @@ Các yêu cầu:
 - MongoDB Compass
 - Visual Studio Code
 
-## 3. Cấu trúc thư mục
-
-```text
-Bt05/
-├── bai05.js
-├── README.md
-└── MinhChung/
-    ├── 01-code.png
-    ├── 02-chay-chuong-trinh.png
-    └── 03-ket-qua-cap-nhat.png
-```
-
-## 4. Cách thực hiện
+## 3. Cách thực hiện
 
 **Bước 1: Di chuyển đến thư mục bài tập**
 
@@ -52,7 +40,7 @@ cd D:\MyNodeJS\Bai03\Bt05
 node bai05.js
 ```
 
-## 5. Kết quả đạt được
+## 4. Kết quả đạt được
 
 - Kết nối thành công đến MongoDB.
 - Lọc được danh sách sinh viên có điểm từ 7 trở lên.
@@ -60,7 +48,7 @@ node bai05.js
 - Cập nhật điểm sinh viên có mã `CDCNTT18B09` thành `9.2`.
 - Hiển thị lại thông tin để xác nhận điểm đã được cập nhật.
 
-## 6. Hình ảnh minh chứng
+## 5. Hình ảnh minh chứng
 
 Các ảnh chụp màn hình được lưu trong thư mục `MinhChung`:
 
