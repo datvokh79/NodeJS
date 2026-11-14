@@ -78,5 +78,3 @@ Các hình ảnh được lưu trong thư mục `MinhChung`:
 ### 7. Kết luận
 
 Qua bài thực hành, em đã biết cách sử dụng module HTTP trong Node.js để tạo Web Server, xử lý yêu cầu GET theo từng đường dẫn và trả về các mã trạng thái HTTP phù hợp.
-
-Chương trình đã thực hiện được các chức năng theo yêu cầu đề bài, đồng thời giúp em hiểu rõ hơn về cách hoạt động cơ bản của một máy chủ web.
