@@ -65,7 +65,7 @@ Các ảnh chụp màn hình được lưu trong thư mục `MinhChung`:
 
 1. `01-ma-nguon.png`: Mã nguồn chương trình `bai03.js`.
 2. `02-terminal.png`: Nội dung file trước khi ghi nối thêm tên lớp.
-3. `03-thongtintxt.png`: Kết quả Terminal và nội dung file sau khi cập nhật.
+3. `03-thong-tin.png`: Kết quả Terminal và nội dung file sau khi cập nhật.
 
 ### 7. Kết luận
 
