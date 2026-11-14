@@ -27,7 +27,7 @@ Các yêu cầu:
 **Bước 1: Di chuyển đến thư mục bài tập**
 
 ```powershell
-cd D:\MyNodeJS\Bai03\Bt05
+cd D:\MyNodeJS\Bai03
 ```
 
 **Bước 2: Kiểm tra MongoDB**
