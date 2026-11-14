@@ -25,7 +25,7 @@ Chương trình kết nối đến MongoDB đang chạy trên máy tính, sử d
 
 **Bước 1: Cài đặt thư viện**
 
-Mở Terminal tại thư mục `Bt04` và thực hiện:
+Mở Terminal tại thư mục `Bai03` và thực hiện:
 
 ```powershell
 npm.cmd install mongodb
@@ -64,7 +64,7 @@ Sử dụng `client.close()` trong khối `finally` để đóng kết nối sau
 
 ### 5. Lệnh chạy chương trình
 
-Mở PowerShell tại thư mục `Bt04` và nhập:
+Mở PowerShell tại thư mục `Bai03` và nhập:
 
 ```powershell
 node bai04.js
@@ -89,12 +89,11 @@ Chương trình đã thực hiện các thao tác:
 Ảnh minh chứng được lưu trong thư mục `MinhChung`:
 
 1. `01-ma-nguon.png`: Mã nguồn file `bai04.js`.
-2. `02-ket-noi-va-them-du-lieu.png`: Terminal hiển thị kết nối thành công và thêm dữ liệu.
-3. `03-danh-sach-sinh-vien.png`: Terminal hiển thị danh sách sinh viên sau khi truy vấn.
+2. `02-install-mongodb.png`: Terminal hiển thị kết nối thành công và thêm dữ liệu.
+3. `03-terminal.png`: Terminal hiển thị danh sách sinh viên sau khi truy vấn.
 4. `04-mongodb-compass.png`: Database `qlsinhvien`, collection `students` và các bản ghi trong MongoDB Compass.
 
 ### 8. Kết luận
 
 Qua bài thực hành, em đã biết cách kết nối ứng dụng Node.js với MongoDB, tạo và truy cập database, thêm nhiều bản ghi bằng `insertMany()` và truy vấn dữ liệu bằng `find()`.
 
-Kết quả cho thấy dữ liệu sinh viên đã được lưu trong MongoDB và có thể kiểm tra lại bằng MongoDB Compass.
