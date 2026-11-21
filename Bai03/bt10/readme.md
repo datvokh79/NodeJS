@@ -476,82 +476,7 @@ báo cáo, cần đối chiếu với kết quả thực tế sau khi chạy ch�
 
 ------------------------------------------------------------------------
 
-## 9. Hình ảnh minh chứng thực hiện
-
-> **Quan trọng:** Các khung dưới đây là vị trí chèn ảnh. Hãy chụp màn
-> hình từ chính máy đã chạy chương trình, lưu đúng tên file trong thư
-> mục `screenshots/`. Không để nguyên khung hướng dẫn này trong bản nộp
-> cuối cùng nếu giảng viên yêu cầu ảnh minh chứng thực tế.
-
-### Hình 1. Kết nối MongoDB và khởi động chương trình
-
-**File ảnh:** `screenshots/01-ket-noi-mongodb.png`
-
-![Hình 1 - Kết nối MongoDB](screenshots/01-ket-noi-mongodb.png)
-
-*Chú thích: Terminal hiển thị thông báo kết nối MongoDB thành công, tên
-database và tên hai Collection được sử dụng trong bài thực hành.*
-
-**Cách chụp:** chạy `node bai10.js`, chụp phần đầu Terminal có thông báo
-kết nối thành công và thông tin database.
-
-### Hình 2. Dữ liệu Collection `departments`
-
-**File ảnh:** `screenshots/02-du-lieu-departments.png`
-
-![Hình 2 - Collection
-departments](screenshots/02-du-lieu-departments.png)
-
-*Chú thích: MongoDB Compass hiển thị Collection `departments` với các
-trường `makhoa` và `tenkhoa`, gồm ba khoa theo dữ liệu mẫu.*
-
-**Cách chụp:** mở MongoDB Compass → database `qlsinhvien` → Collection
-`departments` → chụp phần Documents có thể đọc được dữ liệu.
-
-### Hình 3. Dữ liệu Collection `students_join`
-
-**File ảnh:** `screenshots/03-du-lieu-students-join.png`
-
-![Hình 3 - Collection
-students_join](screenshots/03-du-lieu-students-join.png)
-
-*Chú thích: MongoDB Compass hiển thị các Document sinh viên trong
-Collection `students_join`, gồm mã sinh viên, họ tên và mã khoa dùng để
-liên kết.*
-
-**Cách chụp:** mở Collection `students_join`, chụp danh sách Documents.
-Nếu không hiển thị hết sáu Document trên một màn hình, có thể chụp thêm
-ảnh hoặc thu nhỏ mức zoom vừa đủ để đọc.
-
-### Hình 4. Thực hiện truy vấn `$lookup`
-
-**File ảnh:** `screenshots/04-truy-van-lookup.png`
-
-![Hình 4 - Truy vấn lookup](screenshots/04-truy-van-lookup.png)
-
-*Chú thích: Phần mã nguồn Aggregation Pipeline thể hiện việc sử dụng
-`$lookup` để đối chiếu `students_join.makhoa` với `departments.makhoa`.*
-
-**Cách chụp:** mở `bai10.js` trong Visual Studio Code, chụp đoạn
-Pipeline có `$lookup`, `$unwind`, `$project` và `$sort`. Ảnh phải hiển
-thị rõ tên trường và tên Collection.
-
-### Hình 5. Kết quả liên kết dữ liệu
-
-**File ảnh:** `screenshots/05-ket-qua-lien-ket.png`
-
-![Hình 5 - Kết quả liên kết](screenshots/05-ket-qua-lien-ket.png)
-
-*Chú thích: Terminal hiển thị bảng sinh viên kèm tên khoa sau khi thực
-hiện Aggregation Pipeline, cùng phần thống kê số lượng liên kết thành
-công và chưa thành công.*
-
-**Cách chụp:** chạy lại chương trình và chụp phần bảng kết quả cùng báo
-cáo tổng kết. Cần bảo đảm các cột và thông báo thống kê đọc được.
-
-------------------------------------------------------------------------
-
-## 10. Kiểm thử chương trình
+## 9. Kiểm thử chương trình
 
 Có thể kiểm thử các tình huống sau:
 
@@ -583,7 +508,7 @@ thể chạy riêng Pipeline hoặc tạm thời điều chỉnh bước khởi 
 
 ------------------------------------------------------------------------
 
-## 11. Kết luận
+## 10. Kết luận
 
 Qua bài thực hành CAMPUS CONNECT, chương trình đã sử dụng Node.js kết
 nối MongoDB và thao tác với hai Collection độc lập là `departments` và
@@ -598,22 +523,4 @@ Với bộ dữ liệu mẫu gồm ba khoa và sáu sinh viên, kết quả dự
 sáu sinh viên đều tìm thấy thông tin khoa tương ứng. Bài thực hành giúp
 hiểu cách liên kết dữ liệu giữa các Collection trong MongoDB và cách sử
 dụng MongoDB Node.js Driver để xây dựng ứng dụng thực tế.
-
-------------------------------------------------------------------------
-
-## 12. Checklist trước khi nộp
-
--   [ ] Có file `bai10.js` và chạy không phát sinh lỗi.
--   [ ] MongoDB Server hoạt động và kết nối được.
--   [ ] Database `qlsinhvien` có Collection `departments`.
--   [ ] Database `qlsinhvien` có Collection `students_join`.
--   [ ] Có dữ liệu khoa và sinh viên trong hai Collection.
--   [ ] Mã nguồn có sử dụng `aggregate()` và `$lookup`.
--   [ ] Kết quả hiển thị được mã sinh viên, họ tên, mã khoa và tên khoa.
--   [ ] Đã chụp ảnh minh chứng thực tế và lưu vào `screenshots/`.
--   [ ] Đường dẫn ảnh trong README trùng với tên file ảnh thực tế.
--   [ ] Đã kiểm tra lại nội dung README và loại bỏ các khung ảnh chưa
-    được thay bằng ảnh thật.
-
-**Hoàn thành Bài 10 -- CAMPUS CONNECT.**
 
