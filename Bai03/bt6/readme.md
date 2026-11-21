@@ -446,6 +446,5 @@ Các ảnh minh chứng được lưu trong thư mục `MinhChung`:
 
 | Tên ảnh | Nội dung |
 |---|---|
-| `01-module-xulyDiem.png` | Mã nguồn module tính điểm và xếp loại |
+| `01-cau-truc-thu-muc` | Cấu trúc thư mục bài thực hành |
 | `02-bao-cao-ket-qua.png` | Kết quả chạy chương trình trên Terminal |
-| `03-cau-truc-thu-muc.png` | Cấu trúc thư mục bài thực hành |
