@@ -8,7 +8,6 @@
 | Tên chương trình | ARCHIVE DESK – File Management System |
 | Sinh viên | Võ Tiến Đạt |
 | Lớp | CĐ-CNTT18B |
-| Ngôn ngữ lập trình | JavaScript |
 | Môi trường thực thi | Node.js |
 | Module sử dụng | `fs`, `path` |
 | Phiên bản chương trình | 1.0.0 |
