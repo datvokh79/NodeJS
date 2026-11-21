@@ -120,16 +120,8 @@ Bt08/
 │
 ├── bai08.js
 │
-├── README.md
-│
-├── data/
-│   └── ghichu_moi.txt
-│
-└── images/
-    ├── 01-giao-dien-chuong-trinh.png
-    ├── 02-tao-va-ghi-tap-tin.png
-    ├── 03-doi-ten-va-doc-tap-tin.png
-    └── 04-xoa-va-kiem-tra.png
+└── data/
+    └── ghichu_moi.txt
 ```
 
 **Giải thích:**
