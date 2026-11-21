@@ -1,506 +1,332 @@
-# BÀI 8 – QUẢN LÝ TẬP TIN VỚI FILE SYSTEM
+# Bài 9 -- Xóa dữ liệu có điều kiện trong MongoDB
 
-## 1. Thông tin bài thực hành
+**Sinh viên:** Võ Tiến Đạt\
+**Lớp:** CĐ-CNTT18B\
+**Mã sinh viên:** CDCNTT18B09\
+**Tên chương trình:** CAMPUS LEDGER -- Hệ thống quản lý hồ sơ sinh viên
 
-| Nội dung | Thông tin |
-|---|---|
-| Tên bài tập | Bài 8 – Quản lý tập tin với File System |
-| Tên chương trình | ARCHIVE DESK – File Management System |
-| Sinh viên | Võ Tiến Đạt |
-| Lớp | CĐ-CNTT18B |
-| Môi trường thực thi | Node.js |
-| Module sử dụng | `fs`, `path` |
-| Phiên bản chương trình | 1.0.0 |
-| Tập tin chính | `bai08.js` |
+------------------------------------------------------------------------
 
----
+## 1. Giới thiệu
 
-## 2. Giới thiệu chương trình
+Bài thực hành xây dựng chương trình Node.js kết nối MongoDB để thực hiện
+các thao tác xóa dữ liệu có điều kiện. Chương trình sử dụng database
+`qlsinhvien` và collection riêng `students_test`, tránh tác động đến
+collection `students`.
 
-**Archive Desk** là chương trình thực hành quản lý tập tin được xây dựng bằng Node.js, sử dụng module File System (`fs`) để thực hiện các thao tác cơ bản với thư mục và tập tin trên máy tính.
+Chương trình mô phỏng một công cụ quản lý hồ sơ sinh viên. Kết quả được
+trình bày trên Terminal bằng các tiêu đề, bảng dữ liệu và phần thống kê.
 
-Chương trình được thiết kế theo hướng mô phỏng một hệ thống lưu trữ hồ sơ đơn giản. Thay vì chỉ thực hiện các lệnh tạo, ghi, đổi tên và xóa tập tin riêng lẻ, chương trình tổ chức các thao tác thành một quy trình liên tục, có thông báo trạng thái và kiểm tra kết quả sau khi thực hiện.
+## 2. Mục tiêu và yêu cầu
 
-Giao diện Terminal được trình bày theo dạng bảng cột, bao gồm thời gian thực hiện, mã bước, trạng thái và nội dung xử lý. Cách trình bày này giúp người dùng dễ dàng theo dõi tiến trình hoạt động của chương trình.
+-   Kết nối MongoDB đang chạy trên máy.
+-   Sử dụng database `qlsinhvien`, collection `students_test`.
+-   Thêm tối thiểu 5 sinh viên mẫu.
+-   Dùng `deleteOne()` xóa một sinh viên theo mã.
+-   Dùng `deleteMany()` xóa tất cả sinh viên có điểm dưới 5.
+-   Hiển thị số bản ghi đã xóa và danh sách còn lại bằng `find()`.
+-   Chạy chương trình bằng `node bai09.js`.
 
-### Mục tiêu thực hiện
+## 3. Công nghệ sử dụng
 
-- Làm quen với module `fs` trong Node.js.
-- Biết cách tạo thư mục bằng `mkdir()`.
-- Biết cách tạo và ghi nội dung vào tập tin bằng `writeFile()`.
-- Biết cách đổi tên tập tin bằng `rename()`.
-- Biết cách đọc nội dung tập tin bằng `readFile()`.
-- Biết cách xóa tập tin bằng `unlink()`.
-- Biết cách sử dụng module `path` để xây dựng đường dẫn.
-- Thực hành xử lý lỗi với `try...catch`.
-- Sử dụng `async/await` để tổ chức các thao tác bất đồng bộ.
+  Công nghệ                Vai trò
+  ------------------------ ---------------------------------
+  Node.js                  Môi trường chạy JavaScript
+  MongoDB                  Hệ quản trị cơ sở dữ liệu NoSQL
+  MongoDB Node.js Driver   Kết nối và thao tác với MongoDB
+  PowerShell               Chạy chương trình
+  MongoDB Compass          Quan sát database và collection
 
----
+## 4. Cấu trúc thư mục
 
-## 3. Công nghệ và module sử dụng
-
-### 3.1. Node.js
-
-Node.js là môi trường cho phép thực thi JavaScript bên ngoài trình duyệt. Trong bài thực hành này, Node.js được sử dụng để chạy chương trình và thao tác trực tiếp với hệ thống tập tin trên máy tính.
-
-### 3.2. Module `fs`
-
-Module `fs` (File System) là module có sẵn của Node.js, cung cấp các phương thức để làm việc với tập tin và thư mục.
-
-Chương trình sử dụng các phương thức sau:
-
-| Phương thức | Chức năng | Vị trí sử dụng |
-|---|---|---|
-| `fs.promises.mkdir()` | Tạo thư mục | `taoThuMuc()` |
-| `fs.promises.writeFile()` | Tạo tập tin và ghi nội dung | `taoVaGhiGhiChu()`, `taoVaXoaTapTinTam()` |
-| `fs.promises.rename()` | Đổi tên tập tin | `doiTenGhiChu()` |
-| `fs.promises.readFile()` | Đọc nội dung tập tin | `docGhiChu()` |
-| `fs.promises.unlink()` | Xóa tập tin | `chuanBiDuLieu()`, `taoVaXoaTapTinTam()` |
-| `fs.promises.stat()` | Lấy thông tin tập tin | `kiemTraKetQua()` |
-| `fs.promises.access()` | Kiểm tra khả năng truy cập tập tin | `kiemTraKetQua()` |
-
-**Lưu ý:** Chương trình sử dụng các phiên bản Promise của module `fs`. Đây là cách viết phù hợp với `async/await`, giúp các thao tác được thực hiện tuần tự và dễ xử lý lỗi.
-
-### 3.3. Module `path`
-
-Module `path` được sử dụng để xây dựng đường dẫn tập tin và thư mục.
-
-Ví dụ:
-
-```javascript
-const path = require('path');
-
-const THU_MUC_DATA = path.join(__dirname, 'data');
+``` text
+NodeJS/
+└── Bai03/
+    └── Bt09/
+        ├── bai09.js
+        ├── README.md
+        └── screenshots/
+            ├── 01-chuan-bi-du-lieu.png
+            ├── 02-danh-sach-ban-dau.png
+            ├── 03-ket-qua-delete-one.png
+            ├── 04-ket-qua-delete-many.png
+            └── 05-danh-sach-con-lai.png
 ```
 
-Trong đó:
+Thư mục `screenshots` dùng để lưu ảnh chụp minh chứng thực tế sau khi
+chạy chương trình.
 
-- `__dirname`: Đường dẫn đến thư mục chứa tập tin JavaScript hiện tại.
-- `path.join()`: Kết hợp các thành phần đường dẫn.
-- `THU_MUC_DATA`: Đường dẫn đến thư mục `data`.
+## 5. Cấu hình và chuẩn bị môi trường
 
-Việc sử dụng `path.join()` giúp chương trình xây dựng đường dẫn phù hợp với hệ điều hành, hạn chế lỗi do tự ghép chuỗi đường dẫn.
+### 5.1. Kiểm tra phiên bản
 
-### 3.4. Async/Await và xử lý lỗi
+Mở PowerShell và chạy:
 
-Các thao tác đọc, ghi, đổi tên và xóa tập tin được thực hiện theo cơ chế bất đồng bộ.
-
-Chương trình sử dụng:
-
-- `async`: Khai báo hàm bất đồng bộ.
-- `await`: Chờ thao tác bất đồng bộ hoàn thành trước khi thực hiện bước tiếp theo.
-- `try...catch`: Phát hiện và xử lý lỗi trong quá trình thực thi.
-
-Ví dụ:
-
-```javascript
-async function taoThuMuc() {
-    try {
-        await fs.promises.mkdir(THU_MUC_DATA, {
-            recursive: true
-        });
-
-        console.log('Tao thu muc thanh cong.');
-
-    } catch (loi) {
-        console.error('Loi:', loi.message);
-        throw loi;
-    }
-}
+``` powershell
+node -v
+npm.cmd -v
 ```
 
----
+Môi trường đã kiểm tra trên máy:
 
-## 4. Cấu trúc thư mục chương trình
+-   Node.js: `v26.13.0`
+-   npm: `11.20.0`
+-   MongoDB Node.js Driver: `mongodb@7.9.1`
+-   MongoDB Server: dịch vụ MongoDB trên Windows.
 
-Sau khi thực hiện bài tập, thư mục có cấu trúc như sau:
+### 5.2. Kiểm tra MongoDB
 
-```text
-Bt08/
-│
-├── bai08.js
-│
-└── data/
-    └── ghichu_moi.txt
+``` powershell
+Get-Service MongoDB
 ```
 
-**Giải thích:**
+Dịch vụ cần có trạng thái `Running`.
 
-| Thành phần | Mô tả |
-|---|---|
-| `bai08.js` | Tập tin mã nguồn chính của chương trình |
-| `README.md` | Tài liệu mô tả bài thực hành |
-| `data/` | Thư mục lưu trữ dữ liệu |
-| `ghichu_moi.txt` | Tập tin ghi chú sau khi đổi tên |
-| `images/` | Thư mục lưu ảnh minh chứng |
+### 5.3. Cài đặt thư viện
 
-Thư mục `data` và tập tin `ghichu_moi.txt` được chương trình tạo ra trong quá trình chạy. Thư mục `images` dùng để lưu ảnh chụp màn hình thực tế.
+Nếu dự án chưa có MongoDB Driver, chạy:
 
----
-
-## 5. Phân tích các thành phần trong chương trình
-
-### 5.1. Khai báo module
-
-```javascript
-const fs = require('fs');
-const path = require('path');
+``` powershell
+npm.cmd install mongodb
 ```
 
-Chương trình khai báo hai module có sẵn của Node.js:
+Kiểm tra:
 
-- `fs`: Thực hiện các thao tác với tập tin và thư mục.
-- `path`: Xử lý và kết hợp đường dẫn.
-
-Không cần cài đặt thêm thư viện bên ngoài.
-
-### 5.2. Khai báo thông tin và đường dẫn
-
-```javascript
-const TEN_CHUONG_TRINH = 'ARCHIVE DESK';
-const PHIEN_BAN = '1.0.0';
-
-const THU_MUC_DATA = path.join(__dirname, 'data');
-const TAP_TIN_GHI_CHU = path.join(
-    THU_MUC_DATA,
-    'ghichu.txt'
-);
+``` powershell
+npm.cmd list mongodb
 ```
 
-Các hằng số được sử dụng để quản lý thông tin chương trình và đường dẫn lưu trữ.
+## 6. Cấu hình kết nối MongoDB
 
-Việc khai báo đường dẫn tập trung giúp mã nguồn dễ đọc, dễ chỉnh sửa và hạn chế việc sử dụng sai tên tập tin trong các hàm xử lý.
+Trong `bai09.js`, chương trình khai báo:
 
-### 5.3. Hiển thị giao diện Terminal
+``` javascript
+const URI = 'mongodb://127.0.0.1:27017';
+const TEN_DATABASE = 'qlsinhvien';
+const TEN_COLLECTION = 'students_test';
 
-Chương trình sử dụng các hàm:
-
-- `hienThiDuongKe()`: Tạo các đường phân cách trong Terminal.
-- `hienThiTieuDe()`: Hiển thị tên chương trình và thông tin sinh viên.
-- `hienThiTieuDeBang()`: Hiển thị tiêu đề các cột nhật ký.
-- `ghiNhatKy()`: In thời gian, mã bước, trạng thái và nội dung xử lý.
-
-Các trạng thái được sử dụng:
-
-| Trạng thái | Ý nghĩa |
-|---|---|
-| `INFO` | Thông tin chung |
-| `SUCCESS` | Thao tác thực hiện thành công |
-| `ERROR` | Có lỗi xảy ra |
-
-### 5.4. Chuẩn bị dữ liệu trước khi chạy
-
-Hàm `chuanBiDuLieu()` thực hiện dọn dẹp các tập tin còn sót lại từ lần chạy trước:
-
-```javascript
-await fs.promises.unlink(TAP_TIN_GHI_CHU_MOI);
-await fs.promises.unlink(TAP_TIN_TAM);
+const client = new MongoClient(URI);
 ```
 
-Nếu tập tin không tồn tại, chương trình nhận diện mã lỗi `ENOENT` và tiếp tục thực hiện.
+-   `URI`: địa chỉ MongoDB cục bộ, sử dụng cổng mặc định `27017`.
+-   `TEN_DATABASE`: tên database cần thao tác.
+-   `TEN_COLLECTION`: collection riêng dành cho bài thực hành.
+-   `MongoClient`: đối tượng của MongoDB Driver dùng để kết nối máy chủ.
 
-Việc dọn dẹp giúp chương trình có thể chạy lại nhiều lần mà không bị vướng tập tin kết quả từ lần chạy trước.
+Sau khi kết nối, chương trình lấy database và collection:
 
-### 5.5. Tạo thư mục data
+``` javascript
+const db = client.db(TEN_DATABASE);
+const collection = db.collection(TEN_COLLECTION);
+```
 
-Hàm `taoThuMuc()` sử dụng:
+## 7. Thiết kế dữ liệu sinh viên
 
-```javascript
-await fs.promises.mkdir(THU_MUC_DATA, {
-    recursive: true
+Mỗi sinh viên gồm 4 trường:
+
+  Trường    Kiểu dữ liệu   Ý nghĩa
+  --------- -------------- --------------
+  `masv`    String         Mã sinh viên
+  `hoten`   String         Họ và tên
+  `tuoi`    Number         Tuổi
+  `diem`    Number         Điểm số
+
+Dữ liệu mẫu gồm 6 sinh viên:
+
+  Mã sinh viên   Họ tên                Tuổi   Điểm
+  -------------- ------------------- ------ ------
+  CDCNTT18B05    Nguyễn Thành Danh       20    8.5
+  CDCNTT18B17    Nguyễn Thành Long       21    4.2
+  CDCNTT18B08    Cao Bảo Đại             20    7.8
+  CDCNTT18B06    Nguyễn Đức Dưỡng        19    3.5
+  CDCNTT18B09    Võ Tiến Đạt             21    9.0
+  CDCNTT18B01    Võ Đức Anh              20    6.5
+
+## 8. Giải thích các chức năng
+
+### 8.1. Chuẩn bị và làm mới dữ liệu
+
+Hàm `chuanBiDuLieu(collection)` tạo danh sách 6 sinh viên. Trước khi
+thêm dữ liệu mới, chương trình thực hiện:
+
+``` javascript
+const ketQuaDatLai = await collection.deleteMany({});
+```
+
+Lệnh này xóa các bản ghi cũ trong riêng collection `students_test`, giúp
+mỗi lần chạy đều bắt đầu với cùng một bộ dữ liệu. Sau đó, chương trình
+thêm danh sách bằng:
+
+``` javascript
+const ketQuaThem = await collection.insertMany(danhSachSinhVien);
+```
+
+Số bản ghi cũ bị xóa và số sinh viên được thêm được hiển thị trên
+Terminal.
+
+**Lưu ý:** Lệnh reset chỉ tác động đến `students_test`, không xóa toàn
+bộ database và không xóa collection `students`.
+
+### 8.2. Hiển thị danh sách sinh viên
+
+Hàm `hienThiDanhSach(collection, tieuDe)` sử dụng:
+
+``` javascript
+const danhSach = await collection.find({}).toArray();
+```
+
+-   `find({})` truy vấn tất cả bản ghi trong collection.
+-   `toArray()` chuyển kết quả truy vấn thành mảng.
+-   Chương trình trình bày dữ liệu thành bảng và đếm tổng số sinh viên.
+
+### 8.3. Xóa một sinh viên bằng `deleteOne()`
+
+Hàm `xoaMotSinhVien(collection)` tìm sinh viên có mã `CDCNTT18B09`:
+
+``` javascript
+const ketQua = await collection.deleteOne({
+    masv: 'CDCNTT18B09'
 });
 ```
 
-Chức năng:
+`deleteOne()` chỉ xóa tối đa một bản ghi phù hợp với điều kiện. Thuộc
+tính `deletedCount` cho biết số bản ghi thực tế đã bị xóa. Với dữ liệu
+mẫu, kết quả dự kiến là **1 bản ghi**.
 
-- Tạo thư mục `data` nếu chưa tồn tại.
-- Nếu thư mục đã tồn tại thì không phát sinh lỗi do tùy chọn `recursive: true`.
-- Thư mục này là nơi lưu trữ các tập tin trong bài thực hành.
+### 8.4. Xóa nhiều sinh viên bằng `deleteMany()`
 
-### 5.6. Tạo và ghi nội dung vào ghichu.txt
+Hàm `xoaSinhVienDiemThap(collection)` sử dụng điều kiện:
 
-Hàm `taoVaGhiGhiChu()` sử dụng `fs.promises.writeFile()` để tạo tập tin và ghi dữ liệu.
+``` javascript
+const dieuKienXoa = {
+    diem: { $lt: 5 }
+};
 
-Nội dung được ghi gồm bốn dòng:
-
-```text
-ARCHIVE DESK - HO SO GHI CHU
-Nguoi quan ly: Vo Tien Dat
-Muc dich: Thuc hanh quan ly tap tin bang Node.js File System
-Trang thai: Dang luu tru
+const ketQua = await collection.deleteMany(dieuKienXoa);
 ```
 
-Phương thức `writeFile()` có nhiệm vụ tạo tập tin nếu chưa tồn tại và ghi nội dung vào tập tin.
+-   `diem`: trường điểm của sinh viên.
+-   `$lt`: toán tử MongoDB có nghĩa là nhỏ hơn.
+-   `5`: ngưỡng điểm dùng để lọc dữ liệu.
 
-Tham số `'utf8'` được sử dụng để xác định kiểu mã hóa văn bản.
+`deleteMany()` xóa tất cả bản ghi thỏa mãn điều kiện. Với dữ liệu mẫu,
+hai sinh viên có điểm `4.2` và `3.5` bị xóa, tương ứng **2 bản ghi**.
 
-### 5.7. Đổi tên tập tin
+### 8.5. Thống kê và hiển thị kết quả
 
-Hàm `doiTenGhiChu()` sử dụng:
+Sau khi thực hiện hai thao tác xóa, chương trình truy vấn lại collection
+bằng `find({})` để hiển thị danh sách còn lại.
 
-```javascript
-await fs.promises.rename(
-    TAP_TIN_GHI_CHU,
-    TAP_TIN_GHI_CHU_MOI
-);
+Báo cáo tổng kết gồm:
+
+-   Số sinh viên ban đầu.
+-   Số bản ghi xóa bằng `deleteOne()`.
+-   Số bản ghi xóa bằng `deleteMany()`.
+-   Tổng số bản ghi đã xóa.
+-   Số sinh viên còn lại.
+
+Chương trình kiểm tra tính nhất quán theo công thức:
+
+``` text
+Số ban đầu = Tổng số đã xóa + Số còn lại
 ```
 
-Thao tác này đổi tên:
+### 8.6. Đóng kết nối
 
-```text
-ghichu.txt
+Chương trình sử dụng `try...catch...finally` để xử lý lỗi và đóng kết
+nối sau khi hoàn tất. Việc đóng kết nối giúp giải phóng tài nguyên làm
+việc với MongoDB.
+
+## 9. Cách chạy chương trình
+
+Mở PowerShell tại thư mục dự án:
+
+``` powershell
+cd D:\MyNodeJS\Bai03\Bt09
 ```
 
-thành:
+Chạy chương trình:
 
-```text
-ghichu_moi.txt
+``` powershell
+node bai09.js
 ```
 
-Tập tin sau khi đổi tên vẫn giữ nguyên nội dung đã ghi trước đó.
-
-### 5.8. Đọc nội dung tập tin sau khi đổi tên
-
-Hàm `docGhiChu()` sử dụng:
-
-```javascript
-const noiDung = await fs.promises.readFile(
-    TAP_TIN_GHI_CHU_MOI,
-    'utf8'
-);
-```
-
-Chương trình đọc nội dung từ `ghichu_moi.txt`, sau đó hiển thị từng dòng trên Terminal.
-
-Việc đọc tập tin sau khi đổi tên giúp kiểm tra rằng tập tin mới vẫn tồn tại và dữ liệu được lưu trữ đúng.
-
-### 5.9. Tạo và xóa tập tin tạm
-
-Hàm `taoVaXoaTapTinTam()` thực hiện hai thao tác liên tiếp.
-
-**Bước 1: Tạo tập tin tạm**
-
-```javascript
-await fs.promises.writeFile(
-    TAP_TIN_TAM,
-    'Day la tap tin tam cua Archive Desk.',
-    'utf8'
-);
-```
-
-Tập tin `tam.txt` được tạo trong thư mục `data` và ghi một nội dung mẫu.
-
-**Bước 2: Xóa tập tin tạm**
-
-```javascript
-await fs.promises.unlink(TAP_TIN_TAM);
-```
-
-Sau khi tạo thành công, chương trình sử dụng `unlink()` để xóa tập tin `tam.txt`.
-
-Kết quả mong đợi là tập tin tạm không còn tồn tại trong thư mục `data`.
-
-### 5.10. Kiểm tra kết quả cuối cùng
-
-Hàm `kiemTraKetQua()` thực hiện kiểm tra:
-
-- Sử dụng `fs.promises.stat()` để lấy thông tin tập tin `ghichu_moi.txt`.
-- Sử dụng `fs.promises.access()` để kiểm tra tập tin `tam.txt` còn tồn tại hay không.
-- Hiển thị dung lượng tập tin và trạng thái xóa tập tin tạm.
-
-Nếu tập tin tạm đã được xóa, chương trình ghi nhận kết quả thành công. Nếu tập tin vẫn còn tồn tại, chương trình phát sinh lỗi để thông báo.
-
-### 5.11. Điều phối chương trình
-
-Hàm `khoiChay()` là hàm điều phối toàn bộ hoạt động.
-
-Các thao tác được thực hiện theo thứ tự:
-
-1. Hiển thị giao diện chương trình.
-2. Ghi nhận trạng thái khởi động.
-3. Dọn dẹp dữ liệu cũ.
-4. Tạo thư mục `data`.
-5. Tạo và ghi nội dung vào `ghichu.txt`.
-6. Đổi tên thành `ghichu_moi.txt`.
-7. Đọc nội dung tập tin mới.
-8. Tạo tập tin `tam.txt`.
-9. Xóa tập tin `tam.txt`.
-10. Kiểm tra kết quả cuối cùng.
-11. Hiển thị thông báo hoàn tất.
-
-Nếu có lỗi xảy ra, chương trình sử dụng `catch` để ghi nhận thông báo và đặt `process.exitCode = 1`.
-
----
-
-## 6. Quy trình hoạt động tổng quát
-
-```text
-              BAT DAU CHUONG TRINH
-                       |
-                       v
-                Hien thi giao dien
-                       |
-                       v
-                Don dep du lieu cu
-                       |
-                       v
-                Tao thu muc data
-                       |
-                       v
-                Tao ghichu.txt
-                       |
-                       v
-                Ghi noi dung vao file
-                       |
-                       v
-             Doi ten thanh ghichu_moi.txt
-                       |
-                       v
-              Doc noi dung file moi
-                       |
-                       v
-                 Tao tap tin tam
-                       |
-                       v
-                 Xoa tap tin tam
-                       |
-                       v
-                Kiem tra ket qua
-                       |
-                       v
-                Hien thi hoan tat
-                       |
-                       v
-                     KET THUC
-```
-
----
-
-## 7. Hướng dẫn cài đặt và chạy chương trình
-
-### 7.1. Yêu cầu môi trường
-
-- Đã cài đặt Node.js.
-- Có Terminal hoặc PowerShell.
-- Có mã nguồn `bai08.js`.
-
-Kiểm tra Node.js:
-
-```bash
-node -v
-```
-
-### 7.2. Mở thư mục bài tập
-
-Mở Terminal tại thư mục chứa `bai08.js`.
-
-Ví dụ:
-
-```powershell
-cd D:\MyNodeJS\Bai03\Bt08
-```
-
-Đường dẫn trên chỉ là ví dụ; cần thay đổi theo vị trí thực tế của thư mục bài tập.
-
-### 7.3. Chạy chương trình
-
-Nhập lệnh:
-
-```bash
-node bai08.js
-```
-
-Nếu chương trình chạy đúng, Terminal sẽ hiển thị bảng nhật ký, nội dung tập tin ghi chú và kết quả kiểm tra cuối cùng.
-
-**Lưu ý:** Bài tập sử dụng các module có sẵn của Node.js nên không cần chạy `npm install`.
-
----
-
-## 8. Kết quả thực hiện
-
-Sau khi chương trình chạy hoàn tất, thư mục `data` có kết quả:
-
-```text
-data/
-└── ghichu_moi.txt
-```
-
-Nội dung tập tin `ghichu_moi.txt`:
-
-```text
-ARCHIVE DESK - HO SO GHI CHU
-Nguoi quan ly: Vo Tien Dat
-Muc dich: Thuc hanh quan ly tap tin bang Node.js File System
-Trang thai: Dang luu tru
-```
-
-Kết quả kiểm tra:
-
-| Nội dung kiểm tra | Kết quả mong đợi |
-|---|---|
-| Thư mục `data` | Đã được tạo |
-| `ghichu.txt` | Đã đổi tên |
-| `ghichu_moi.txt` | Tồn tại và có nội dung |
-| `tam.txt` | Đã được xóa |
-| Quy trình chương trình | Hoàn tất |
-
-### Ảnh minh chứng
-
-Bổ sung ảnh chụp màn hình thực tế sau khi chạy chương trình vào thư mục `images/`.
-
-| STT | Tên ảnh | Nội dung minh chứng |
-|---|---|---|
-| 1 | `01-giao-dien-chuong-trinh.png` | Giao diện và bảng nhật ký Terminal |
-| 2 | `02-tao-va-ghi-tap-tin.png` | Thao tác tạo thư mục và ghi tập tin |
-| 3 | `03-doi-ten-va-doc-tap-tin.png` | Thông báo đổi tên và nội dung tập tin |
-| 4 | `04-xoa-va-kiem-tra.png` | Thông báo xóa tập tin tạm và kết quả cuối cùng |
-| 5 | `05-cau-truc-bai.png` | 
-| 6 | `06-noi-dung-ghi-chu.png` |
-
----
-
-## 9. Kiểm tra dữ liệu bằng PowerShell
-
-Có thể sử dụng các lệnh sau để kiểm tra trực tiếp kết quả trên máy tính.
-
-**Liệt kê các tập tin trong thư mục data:**
-
-```powershell
-Get-ChildItem .\data
-```
-
-**Đọc nội dung tập tin ghi chú:**
-
-```powershell
-Get-Content .\data\ghichu_moi.txt
-```
-
-**Kiểm tra tập tin tạm:**
-
-```powershell
-Test-Path .\data\tam.txt
-```
-
-Kết quả mong đợi của lệnh cuối cùng:
-
-```text
-False
-```
-
-Giá trị `False` cho biết tập tin `tam.txt` không còn tồn tại.
-
----
-
-## 10. Kết luận
-
-Thông qua bài thực hành Archive Desk, em đã tìm hiểu và vận dụng được các thao tác quản lý tập tin cơ bản trong Node.js bằng module File System.
-
-Chương trình đã thực hiện được việc tạo thư mục, tạo và ghi nội dung vào tập tin, đổi tên, đọc dữ liệu và xóa tập tin tạm. Bên cạnh đó, em cũng thực hành sử dụng module `path` để xây dựng đường dẫn, kết hợp `async/await` để xử lý các thao tác bất đồng bộ và `try...catch` để kiểm soát lỗi trong quá trình thực hiện.
-
-Qua bài tập này, em hiểu rõ hơn cách Node.js tương tác với hệ thống tập tin và có thể vận dụng những kiến thức đã học để xây dựng các chương trình quản lý dữ liệu ở những bài thực hành tiếp theo.
-
----
-
-**Sinh viên thực hiện:** Võ Tiến Đạt  
-**Lớp:** CĐ-CNTT18B  
-**Bài thực hành:** Bài 8 – Quản lý tập tin với File System
+Các bước xử lý:
+
+1.  Kết nối MongoDB.
+2.  Làm mới collection `students_test`.
+3.  Thêm 6 sinh viên mẫu.
+4.  Hiển thị danh sách ban đầu.
+5.  Xóa sinh viên `CDCNTT18B09` bằng `deleteOne()`.
+6.  Xóa sinh viên có điểm dưới 5 bằng `deleteMany()`.
+7.  Hiển thị danh sách còn lại và báo cáo tổng kết.
+8.  Đóng kết nối MongoDB.
+
+## 10. Kết quả dự kiến
+
+  Nội dung                    Số lượng
+  ------------------------- ----------
+  Sinh viên ban đầu                  6
+  Xóa bằng `deleteOne()`             1
+  Xóa bằng `deleteMany()`            2
+  Tổng số đã xóa                     3
+  Sinh viên còn lại                  3
+
+Danh sách còn lại dự kiến:
+
+  Mã sinh viên   Họ tên                Tuổi   Điểm
+  -------------- ------------------- ------ ------
+  CDCNTT18B05    Nguyễn Thành Danh       20    8.5
+  CDCNTT18B08    Cao Bảo Đại             20    7.8
+  CDCNTT18B01    Võ Đức Anh              20    6.5
+
+Đây là kết quả dự kiến theo bộ dữ liệu mẫu. Khi nộp bài, cần đối chiếu
+với kết quả thực tế trên máy.
+
+## 11. Ảnh chụp minh chứng
+
+Lưu ảnh thực tế vào thư mục `screenshots` theo thứ tự:
+
+  -----------------------------------------------------------------------
+  Tên ảnh                             Nội dung cần chứng minh
+  ----------------------------------- -----------------------------------
+  `01-chuan-bi-du-lieu.png`           Terminal thể hiện kết nối MongoDB
+                                      và thêm đủ 6 sinh viên
+
+  `02-danh-sach-ban-dau.png`          Bảng danh sách 6 sinh viên trước
+                                      khi xóa
+
+  `03-ket-qua-delete-one.png`         Mã `CDCNTT18B09` và số bản ghi xóa
+                                      bằng `deleteOne()`
+
+  `04-ket-qua-delete-many.png`        Điều kiện điểm dưới 5 và số bản ghi
+                                      xóa bằng `deleteMany()`
+
+  `05-danh-sach-con-lai.png`          Danh sách cuối cùng còn 3 sinh viên
+                                      và báo cáo tổng kết
+  -----------------------------------------------------------------------
+
+### Cách chụp ảnh trên Windows
+
+1.  Chạy `node bai09.js` trong PowerShell.
+2.  Cuộn đến phần kết quả cần chụp.
+3.  Nhấn `Windows + Shift + S`.
+4.  Chọn vùng Terminal cần minh chứng.
+5.  Lưu ảnh vào `D:\MyNodeJS\Bai03\Bt09\screenshots`.
+6.  Đặt tên ảnh theo bảng trên.
+
+Nên chụp rõ tiêu đề phần, nội dung thao tác và số lượng bản ghi. Không
+sử dụng ảnh minh họa thay cho kết quả chạy thực tế.
+
+## 12. Kết luận
+
+Qua bài thực hành, em đã thực hiện được việc kết nối Node.js với
+MongoDB, chuẩn bị dữ liệu sinh viên và thao tác xóa dữ liệu theo điều
+kiện. Cụ thể, em sử dụng `deleteOne()` để xóa một sinh viên theo mã và
+`deleteMany()` để xóa các sinh viên có điểm dưới 5. Sau khi xóa, chương
+trình truy vấn lại bằng `find()` để kiểm tra danh sách còn lại và thống
+kê số bản ghi đã xóa.
+
+Bài thực hành giúp em hiểu rõ hơn cách sử dụng MongoDB Node.js Driver để
+quản lý dữ liệu, thực hiện truy vấn và kiểm soát kết quả sau khi thao
+tác với cơ sở dữ liệu.
