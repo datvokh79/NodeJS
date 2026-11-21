@@ -302,21 +302,10 @@ Lưu ảnh thực tế vào thư mục `screenshots` theo thứ tự:
   `04-ket-qua-delete-many.png`        Điều kiện điểm dưới 5 và số bản ghi
                                       xóa bằng `deleteMany()`
 
-  `05-danh-sach-con-lai.png`          Danh sách cuối cùng còn 3 sinh viên
+  05-danh-sach-con-lai.png`          Danh sách cuối cùng còn 3 sinh viên
                                       và báo cáo tổng kết
   -----------------------------------------------------------------------
 
-### Cách chụp ảnh trên Windows
-
-1.  Chạy `node bai09.js` trong PowerShell.
-2.  Cuộn đến phần kết quả cần chụp.
-3.  Nhấn `Windows + Shift + S`.
-4.  Chọn vùng Terminal cần minh chứng.
-5.  Lưu ảnh vào `D:\MyNodeJS\Bai03\Bt09\screenshots`.
-6.  Đặt tên ảnh theo bảng trên.
-
-Nên chụp rõ tiêu đề phần, nội dung thao tác và số lượng bản ghi. Không
-sử dụng ảnh minh họa thay cho kết quả chạy thực tế.
 
 ## 12. Kết luận
 
