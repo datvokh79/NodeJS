@@ -454,6 +454,8 @@ Bổ sung ảnh chụp màn hình thực tế sau khi chạy chương trình và
 | 2 | `02-tao-va-ghi-tap-tin.png` | Thao tác tạo thư mục và ghi tập tin |
 | 3 | `03-doi-ten-va-doc-tap-tin.png` | Thông báo đổi tên và nội dung tập tin |
 | 4 | `04-xoa-va-kiem-tra.png` | Thông báo xóa tập tin tạm và kết quả cuối cùng |
+| 5 | `05-cau-truc-bai.png` | 
+| 6 | `06-noi-dung-ghi-chu.png` |
 
 ---
 
