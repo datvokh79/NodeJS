@@ -556,11 +556,12 @@ Các hình ảnh minh chứng được lưu trong thư mục `images/`.
 
 | STT | Hình ảnh | Nội dung |
 |---|---|---|
-| 1 | `01-trang-chu.png` | Giao diện trang chủ và hai biểu mẫu nhập liệu |
-| 2 | `02-gui-loi-chao.png` | Kết quả chức năng gửi lời chào |
-| 3 | `03-tinh-tong.png` | Kết quả chức năng tính tổng hai số |
-| 4 | `04-ket-qua-loi.png` | Giao diện thông báo lỗi khi dữ liệu không hợp lệ |
-
+| 1 | `01-khoi-dong-server.png`
+| 2 | `02-giao-dien-trang-chu.png` | Giao diện trang chủ và hai biểu mẫu nhập liệu |
+| 3 | `03-gui-loi-chao.png` | Kết quả chức năng gửi lời chào |
+| 4 | `04-tinh-tong.png` | Kết quả chức năng tính tổng hai số |
+| 5 | `05-loi-ten.png`          | Giao diện thông báo lỗi khi dữ liệu không hợp lệ |
+| 6 | `06-loi-tinh-tong.png`    |                                                  |
 ## 10. KẾT LUẬN
 
 Qua bài thực hành, em đã xây dựng được một HTTP Server cơ bản bằng Node.js và sử dụng module `http` để tiếp nhận, xử lý các yêu cầu từ trình duyệt.
