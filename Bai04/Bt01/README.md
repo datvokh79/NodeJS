@@ -423,7 +423,7 @@ Truy cập đường dẫn Render được cấp và kiểm tra:
 
 **Đường dẫn website sau triển khai:**
 
-[ĐIỀN LINK RENDER SAU KHI TRIỂN KHAI THÀNH CÔNG]
+[https://dat-creative-journal.onrender.com/]
 
 ---
 
@@ -439,12 +439,6 @@ Các ảnh minh chứng được lưu trong thư mục `screenshots/`.
 | 04 | 04-hobbies.png | Trang sở thích |
 | 05 | 05-contact.png | Trang liên hệ |
 | 06 | 06-404.png | Trang lỗi 404 |
-| 07 | 07-responsive.png | Giao diện trên điện thoại |
-| 08 | 08-terminal.png | Máy chủ Express đang chạy |
-| 09 | 09-render-deploy.png | Quá trình triển khai trên Render |
-| 10 | 10-live-website.png | Website hoạt động trên Internet |
-
-*Lưu ý: Tên ảnh có thể được điều chỉnh theo tên file thực tế trong thư mục screenshots.*
 
 ---
 
