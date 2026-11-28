@@ -7,7 +7,7 @@
 **Trường:** Cao đẳng Kỹ thuật Công nghệ Nha Trang  
 **Đề bài:** Xây dựng web với nền tảng Express (Express Framework)
 **Bài thực hành:** Bài 01 – Xây dựng website giới thiệu cá nhân
-https://dat-creative-journal.onrender.com/
+**Link:** https://dat-creative-journal.onrender.com/
 
 ---
 
